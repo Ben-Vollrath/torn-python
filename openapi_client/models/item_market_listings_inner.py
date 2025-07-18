@@ -68,8 +68,9 @@ class ItemMarketListingsInner(BaseModel):
         else:
             match += 1
         if match > 1:
+            print("test")
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in ItemMarketListingsInner with oneOf schemas: ItemMarketListingNonstackable, ItemMarketListingStackable. Details: " + ", ".join(error_messages))
+            # raise ValueError("Multiple matches found when setting `actual_instance` in ItemMarketListingsInner with oneOf schemas: ItemMarketListingNonstackable, ItemMarketListingStackable. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
             raise ValueError("No match found when setting `actual_instance` in ItemMarketListingsInner with oneOf schemas: ItemMarketListingNonstackable, ItemMarketListingStackable. Details: " + ", ".join(error_messages))
@@ -87,23 +88,22 @@ class ItemMarketListingsInner(BaseModel):
         error_messages = []
         match = 0
 
-        # deserialize data into ItemMarketListingNonstackable
-        try:
-            instance.actual_instance = ItemMarketListingNonstackable.from_json(json_str)
-            match += 1
-        except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
         # deserialize data into ItemMarketListingStackable
         try:
             instance.actual_instance = ItemMarketListingStackable.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
+        # deserialize data into ItemMarketListingNonstackable
+        try:
+            instance.actual_instance = ItemMarketListingNonstackable.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
 
-        if match > 1:
-            # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into ItemMarketListingsInner with oneOf schemas: ItemMarketListingNonstackable, ItemMarketListingStackable. Details: " + ", ".join(error_messages))
-        elif match == 0:
+
+
+        if match == 0:
             # no match
             raise ValueError("No match found when deserializing the JSON string into ItemMarketListingsInner with oneOf schemas: ItemMarketListingNonstackable, ItemMarketListingStackable. Details: " + ", ".join(error_messages))
         else:
